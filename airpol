@@ -1,0 +1,42 @@
+
+#include <LiquidCrystal.h> 
+//δήλωση βιβλιοθήκης για την lcd οθόνη
+
+
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2); //μεταβλητή τύπου liquidcrystal
+
+
+int analogPin = A0;
+int val = 0;          
+
+void setup() {
+  
+  lcd.begin(16, 2); //καθορίζει πλάτος και ύψος
+  lcd.print("What is the air ");
+  lcd.setCursor(0, 125); //καθορίζει που θα εμφανιστεί το κείμενο
+  lcd.print("quality today?");
+  Serial.begin(9600); //sets the data rate to 9600
+  delay(2000); //pause (ms)
+  lcd.display(); //turn-on display
+}
+
+void loop() {
+  
+  
+  lcd.setCursor(0,1); //καθορίζει που θα εμφανιστεί το κείμενο
+  delay(100); //pause (ms)
+  val = analogRead(analogPin); //το val παίρνει την τιμή του analogPin    
+  Serial.println(val); //debug value            
+  lcd.clear();
+  if (val >000 && val <= 330){
+    lcd.print("Normal");
+  } else if (val > 331 &&  val <= 420){
+    lcd.print("Gas Detected");
+  } else if (val > 421 && val <= 520){
+    lcd.print("Dense Gas");
+    lcd.setCursor(0, 1);
+    lcd.print("Detected");
+  } else if (val > 521 && val <= 724){
+    lcd.print("EMERGENCY!");
+  }
+}
